@@ -1,24 +1,49 @@
-# AutoForge
+# 7nashHarness (MqxForge)
 
-[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=flat&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/leonvanzyl)
-
-A long-running autonomous coding agent powered by the Claude Agent SDK. This tool can build complete applications over multiple sessions using a two-agent pattern (initializer + coding agent). Includes a React-based UI for monitoring progress in real-time.
-
-## Video Tutorial
-
-[![Watch the tutorial](https://img.youtube.com/vi/nKiPOxDpcJY/hqdefault.jpg)](https://youtu.be/nKiPOxDpcJY)
-
-> **[Watch the setup and usage guide →](https://youtu.be/nKiPOxDpcJY)**
+A long-running autonomous coding agent powered by the Claude Agent SDK. Build complete applications over multiple sessions using a two-agent pattern (initializer + coding agent). Includes a React-based UI with an Aceternity-inspired glassmorphic design for monitoring progress in real-time.
 
 ---
 
-## Prerequisites
+## Installation
 
-- **Node.js 20+** - Required for the CLI
-- **Python 3.11+** - Auto-detected on first run ([download](https://www.python.org/downloads/))
-- **Claude Code CLI** - Install and authenticate (see below)
+### Prerequisites
 
-### Claude Code CLI (Required)
+| Requirement | Version | Check |
+|---|---|---|
+| **Python** | 3.11+ | `python3 --version` |
+| **Node.js** | 20+ | `node --version` |
+| **Claude Code CLI** | Latest | `claude --version` |
+
+### One-Command Install
+
+```bash
+git clone https://github.com/mqxerror/MqxForge.git
+cd MqxForge
+./install.sh
+```
+
+That's it. The installer handles everything:
+1. Detects Python 3.11+ (tries `python3.13`, `3.12`, `3.11`, then generic `python3`)
+2. Verifies Node.js 20+ and npm
+3. Creates a Python virtual environment in `venv/`
+4. Installs all Python dependencies
+5. Installs npm packages for the UI
+6. Builds the React frontend
+7. Checks for Claude CLI
+8. Starts the server and opens your browser
+
+### Installer Options
+
+```bash
+./install.sh                    # Full install + start + open browser
+./install.sh --no-browser       # Install + start, don't open browser
+./install.sh --install-only     # Install everything, don't start server
+./install.sh --dev              # Install + start in dev mode (Vite hot reload)
+./install.sh --port 9999        # Use a custom port
+./install.sh --host 0.0.0.0    # Allow remote access (use with caution)
+```
+
+### Installing Claude Code CLI
 
 **macOS / Linux:**
 ```bash
@@ -30,89 +55,87 @@ curl -fsSL https://claude.ai/install.sh | bash
 irm https://claude.ai/install.ps1 | iex
 ```
 
-### Authentication
+Then authenticate:
+```bash
+claude login
+```
 
-You need one of the following:
-
-- **Claude Pro/Max Subscription** - Use `claude login` to authenticate (recommended)
-- **Anthropic API Key** - Pay-per-use from https://console.anthropic.com/
+You need either a **Claude Pro/Max subscription** or an **Anthropic API key** from https://console.anthropic.com/.
 
 ---
 
 ## Quick Start
 
-### Option 1: npm Install (Recommended)
+### 1. Start the server
 
 ```bash
-npm install -g autoforge-ai
-autoforge
+./install.sh
 ```
 
-On first run, AutoForge automatically:
-1. Checks for Python 3.11+
-2. Creates a virtual environment at `~/.autoforge/venv/`
-3. Installs Python dependencies
-4. Copies a default config file to `~/.autoforge/.env`
-5. Starts the server and opens your browser
+The UI opens at `http://localhost:8888` (or next available port).
 
-### CLI Commands
+### 2. Create a project
 
-```
-autoforge                       Start the server (default)
-autoforge config                Open ~/.autoforge/.env in $EDITOR
-autoforge config --path         Print config file path
-autoforge config --show         Show active configuration values
-autoforge --port PORT           Custom port (default: auto from 8888)
-autoforge --host HOST           Custom host (default: 127.0.0.1)
-autoforge --no-browser          Don't auto-open browser
-autoforge --repair              Delete and recreate virtual environment
-autoforge --version             Print version
-autoforge --help                Show help
-```
+Click **New Project** in the dropdown, choose a name and folder, then define your app using the interactive AI spec creator or by editing templates manually.
 
-### Option 2: From Source (Development)
+### 3. Run the agent
 
-Clone the repository and use the start scripts directly. This is the recommended path if you want to contribute or modify AutoForge itself.
+Hit the **Start** button. The agent will:
+- **First run:** Read your spec and generate features in the database
+- **Subsequent runs:** Implement features one by one, marking them as passing
+
+### 4. Monitor progress
+
+Watch the Kanban board update in real-time as features move from Pending → In Progress → Done.
+
+---
+
+## Manual Installation (Step by Step)
+
+If you prefer to set things up manually instead of using `./install.sh`:
+
+### Python Backend
 
 ```bash
-git clone https://github.com/leonvanzyl/autoforge.git
-cd autoforge
+# Create virtual environment
+python3 -m venv venv
+source venv/bin/activate        # macOS/Linux
+# venv\Scripts\activate         # Windows
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Start the server
+python -m uvicorn server.main:app --host 127.0.0.1 --port 8888
 ```
 
-**Web UI:**
+### React UI
 
-| Platform | Command |
-|---|---|
-| Windows | `start_ui.bat` |
-| macOS / Linux | `./start_ui.sh` |
+```bash
+cd ui
+npm install
+npm run build        # Production build (served by the backend)
+# OR
+npm run dev          # Development server with hot reload on :5173
+```
 
-This launches the React-based web UI at `http://localhost:5173` with:
-- Project selection and creation
-- Kanban board view of features
-- Real-time agent output streaming
-- Start/pause/stop controls
+### Running the Agent Directly (CLI)
 
-**CLI Mode:**
+```bash
+source venv/bin/activate
 
-| Platform | Command |
-|---|---|
-| Windows | `start.bat` |
-| macOS / Linux | `./start.sh` |
+# Standard mode
+python autonomous_agent_demo.py --project-dir /path/to/my-app
 
-The start script will:
-1. Check if Claude CLI is installed
-2. Check if you're authenticated (prompt to run `claude login` if not)
-3. Create a Python virtual environment
-4. Install dependencies
-5. Launch the main menu
+# YOLO mode (skip browser testing, faster prototyping)
+python autonomous_agent_demo.py --project-dir my-app --yolo
 
-### Creating or Continuing a Project
+# Parallel mode (multiple agents)
+python autonomous_agent_demo.py --project-dir my-app --parallel --max-concurrency 3
 
-You'll see options to:
-- **Create new project** - Start a fresh project with AI-assisted spec generation
-- **Continue existing project** - Resume work on a previous project
-
-For new projects, you can use the built-in `/create-spec` command to interactively create your app specification with Claude's help.
+# Batch mode (multiple features per session)
+python autonomous_agent_demo.py --project-dir my-app --batch-size 5
+```
 
 ---
 
@@ -120,280 +143,144 @@ For new projects, you can use the built-in `/create-spec` command to interactive
 
 ### Two-Agent Pattern
 
-1. **Initializer Agent (First Session):** Reads your app specification, creates features in a SQLite database (`features.db`), sets up the project structure, and initializes git.
+1. **Initializer Agent (First Session):** Reads your app specification, creates features in a SQLite database, sets up the project structure, and initializes git.
 
-2. **Coding Agent (Subsequent Sessions):** Picks up where the previous session left off, implements features one by one, and marks them as passing in the database.
+2. **Coding Agent (Subsequent Sessions):** Picks up where the previous session left off, implements features one by one, and marks them as passing.
 
 ### Feature Management
 
-Features are stored in SQLite via SQLAlchemy and managed through an MCP server that exposes tools to the agent:
-- `feature_get_stats` - Progress statistics
-- `feature_get_next` - Get highest-priority pending feature
-- `feature_get_for_regression` - Random passing features for regression testing
-- `feature_mark_passing` - Mark feature complete
-- `feature_skip` - Move feature to end of queue
-- `feature_create_bulk` - Initialize all features (used by initializer)
+Features are stored in SQLite via SQLAlchemy and managed through an MCP server:
+- `feature_get_stats` — Progress statistics
+- `feature_claim_and_get` — Atomically claim next available feature
+- `feature_mark_passing` — Mark feature complete
+- `feature_mark_failing` — Mark feature as failing
+- `feature_skip` — Move feature to end of queue
+- `feature_add_dependency` — Add dependency between features (with cycle detection)
 
 ### Session Management
 
 - Each session runs with a fresh context window
 - Progress is persisted via SQLite database and git commits
-- The agent auto-continues between sessions (3 second delay)
-- Press `Ctrl+C` to pause; run the start script again to resume
-
----
-
-## Important Timing Expectations
-
-> **Note: Building complete applications takes time!**
-
-- **First session (initialization):** The agent generates feature test cases. This takes several minutes and may appear to hang - this is normal.
-
-- **Subsequent sessions:** Each coding iteration can take **5-15 minutes** depending on complexity.
-
-- **Full app:** Building all features typically requires **many hours** of total runtime across multiple sessions.
-
-**Tip:** The feature count in the prompts determines scope. For faster demos, you can modify your app spec to target fewer features (e.g., 20-50 features for a quick demo).
+- The agent auto-continues between sessions (3-second delay)
+- Press `Ctrl+C` to pause; run again to resume
 
 ---
 
 ## Project Structure
 
 ```
-autoforge/
-├── bin/                         # npm CLI entry point
-├── lib/                         # CLI bootstrap and setup logic
-├── start.py                     # CLI menu and project management
-├── start_ui.py                  # Web UI backend (FastAPI server launcher)
-├── autonomous_agent_demo.py     # Agent entry point
-├── agent.py                     # Agent session logic
-├── client.py                    # Claude SDK client configuration
-├── security.py                  # Bash command allowlist and validation
-├── progress.py                  # Progress tracking utilities
-├── prompts.py                   # Prompt loading utilities
+MqxForge/
+├── install.sh                  # One-command installer
+├── BRAND.md                    # Brand guidelines for rebranding
+├── bin/                        # npm CLI entry point
+├── lib/cli.js                  # CLI bootstrap and setup logic
+├── start.py                    # CLI menu and project management
+├── start_ui.py                 # Web UI backend launcher
+├── autonomous_agent_demo.py    # Agent entry point
+├── agent.py                    # Agent session logic
+├── client.py                   # Claude SDK client configuration
+├── security.py                 # Bash command allowlist and validation
+├── progress.py                 # Progress tracking utilities
+├── prompts.py                  # Prompt loading utilities
 ├── api/
-│   └── database.py              # SQLAlchemy models (Feature table)
+│   ├── database.py             # SQLAlchemy models (Feature table)
+│   └── dependency_resolver.py  # Cycle detection (Kahn's + DFS)
 ├── mcp_server/
-│   └── feature_mcp.py           # MCP server for feature management tools
+│   └── feature_mcp.py          # MCP server for feature management
 ├── server/
-│   ├── main.py                  # FastAPI REST API server
-│   ├── websocket.py             # WebSocket handler for real-time updates
-│   ├── schemas.py               # Pydantic schemas
-│   ├── routers/                 # API route handlers
-│   └── services/                # Business logic services
-├── ui/                          # React frontend
+│   ├── main.py                 # FastAPI REST API server
+│   ├── routers/                # API route handlers
+│   └── services/               # Business logic services
+├── ui/                         # React frontend
 │   ├── src/
-│   │   ├── App.tsx              # Main app component
-│   │   ├── hooks/               # React Query and WebSocket hooks
-│   │   └── lib/                 # API client and types
+│   │   ├── App.tsx             # Main app component
+│   │   ├── styles/globals.css  # Aceternity-inspired design system
+│   │   ├── hooks/              # React Query, WebSocket, theme hooks
+│   │   ├── components/         # UI components (Kanban, Agent, etc.)
+│   │   └── lib/                # API client and types
 │   ├── package.json
 │   └── vite.config.ts
 ├── .claude/
-│   ├── commands/
-│   │   └── create-spec.md       # /create-spec slash command
-│   ├── skills/                  # Claude Code skills
-│   └── templates/               # Prompt templates
-├── requirements.txt             # Python dependencies (development)
-├── requirements-prod.txt        # Python dependencies (npm install)
-├── package.json                 # npm package definition
-└── .env                         # Optional configuration
+│   ├── commands/               # Slash commands (/create-spec, etc.)
+│   ├── skills/                 # Claude Code skills
+│   └── templates/              # Prompt templates
+├── requirements.txt            # Python dependencies (development)
+├── requirements-prod.txt       # Python dependencies (production)
+└── package.json                # npm package definition
 ```
-
----
-
-## Generated Project Structure
-
-After the agent runs, your project directory will contain:
-
-```
-generations/my_project/
-├── features.db               # SQLite database (feature test cases)
-├── prompts/
-│   ├── app_spec.txt          # Your app specification
-│   ├── initializer_prompt.md # First session prompt
-│   └── coding_prompt.md      # Continuation session prompt
-├── init.sh                   # Environment setup script
-├── claude-progress.txt       # Session progress notes
-└── [application files]       # Generated application code
-```
-
----
-
-## Running the Generated Application
-
-After the agent completes (or pauses), you can run the generated application:
-
-```bash
-cd generations/my_project
-
-# Run the setup script created by the agent
-./init.sh
-
-# Or manually (typical for Node.js apps):
-npm install
-npm run dev
-```
-
-The application will typically be available at `http://localhost:3000` or similar.
-
----
-
-## Security Model
-
-This project uses a defense-in-depth security approach (see `security.py` and `client.py`):
-
-1. **OS-level Sandbox:** Bash commands run in an isolated environment
-2. **Filesystem Restrictions:** File operations restricted to the project directory only
-3. **Bash Allowlist:** Only specific commands are permitted:
-   - File inspection: `ls`, `cat`, `head`, `tail`, `wc`, `grep`
-   - Node.js: `npm`, `node`
-   - Version control: `git`
-   - Process management: `ps`, `lsof`, `sleep`, `pkill` (dev processes only)
-
-Commands not in the allowlist are blocked by the security hook.
-
----
-
-## Web UI Development
-
-The React UI is located in the `ui/` directory.
-
-### Development Mode
-
-```bash
-cd ui
-npm install
-npm run dev      # Development server with hot reload
-```
-
-### Building for Production
-
-```bash
-cd ui
-npm run build    # Builds to ui/dist/
-```
-
-**Note:** The `start_ui.bat`/`start_ui.sh` scripts serve the pre-built UI from `ui/dist/`. After making UI changes, run `npm run build` to see them when using the start scripts.
-
-### Tech Stack
-
-- React 18 with TypeScript
-- TanStack Query for data fetching
-- Tailwind CSS v4 with neobrutalism design
-- Radix UI components
-- WebSocket for real-time updates
-
-### Real-time Updates
-
-The UI receives live updates via WebSocket (`/ws/projects/{project_name}`):
-- `progress` - Test pass counts
-- `agent_status` - Running/paused/stopped/crashed
-- `log` - Agent output lines (streamed from subprocess stdout)
-- `feature_update` - Feature status changes
 
 ---
 
 ## Configuration
 
-AutoForge reads configuration from a `.env` file. The file location depends on how you installed AutoForge:
+Configuration is read from a `.env` file:
 
-| Install method | Config file location | Edit command |
-|---|---|---|
-| npm (global) | `~/.autoforge/.env` | `autoforge config` |
-| From source | `.env` in the project root | Edit directly |
+| Install method | Config file location |
+|---|---|
+| From source | `.env` in project root |
+| npm global | `~/.autoforge/.env` |
 
-A default config file is created automatically on first run. Use `autoforge config` to open it in your editor, or `autoforge config --show` to print the active values.
-
-### N8N Webhook Integration
-
-Add to your `.env` to send progress notifications to an N8N webhook:
-
-```bash
-# Optional: N8N webhook for progress notifications
-PROGRESS_N8N_WEBHOOK_URL=https://your-n8n-instance.com/webhook/your-webhook-id
-```
-
-When test progress increases, the agent sends:
-
-```json
-{
-  "event": "test_progress",
-  "passing": 45,
-  "total": 200,
-  "percentage": 22.5,
-  "project": "my_project",
-  "timestamp": "2025-01-15T14:30:00.000Z"
-}
-```
-
-### Alternative API Providers (GLM, Ollama, Kimi, Custom)
-
-Alternative providers are configured via the **Settings UI** (gear icon > API Provider). Select your provider, set the base URL, auth token, and model directly in the UI — no `.env` changes needed.
-
-Available providers: **Claude** (default), **GLM** (Zhipu AI), **Ollama** (local models), **Kimi** (Moonshot), **Custom**
-
-For Ollama, install [Ollama v0.14.0+](https://ollama.com), run `ollama serve`, and pull a coding model (e.g., `ollama pull qwen3-coder`). Then select "Ollama" in the Settings UI.
-
-### Using Vertex AI
-
-Add these variables to your `.env` file to run agents via Google Cloud Vertex AI:
+### Vertex AI
 
 ```bash
 CLAUDE_CODE_USE_VERTEX=1
 CLOUD_ML_REGION=us-east5
 ANTHROPIC_VERTEX_PROJECT_ID=your-gcp-project-id
-ANTHROPIC_DEFAULT_OPUS_MODEL=claude-opus-4-6
-ANTHROPIC_DEFAULT_SONNET_MODEL=claude-sonnet-4-5@20250929
-ANTHROPIC_DEFAULT_HAIKU_MODEL=claude-3-5-haiku@20241022
 ```
 
-Requires `gcloud auth application-default login` first. Note the `@` separator (not `-`) in Vertex AI model names.
+### Alternative API Providers
+
+Configure via the **Settings UI** (gear icon > API Provider):
+- **Claude** (default), **GLM** (Zhipu AI), **Ollama** (local models), **Kimi** (Moonshot), **Custom**
+
+### Webhook Notifications
+
+```bash
+PROGRESS_N8N_WEBHOOK_URL=https://your-n8n-instance.com/webhook/your-id
+```
 
 ---
 
-## Customization
+## UI Design
 
-### Changing the Application
+The UI uses an Aceternity-inspired design system:
 
-Use the `/create-spec` command when creating a new project, or manually edit the files in your project's `prompts/` directory:
-- `app_spec.txt` - Your application specification
-- `initializer_prompt.md` - Controls feature generation
+- **Dark-first** — Defaults to dark mode with glassmorphic surfaces
+- **Glassmorphism** — `backdrop-blur` + semi-transparent cards
+- **Gradient accents** — Violet-to-teal gradient text and progress bars
+- **Glow effects** — Subtle border glow on hover
+- **Dot pattern** — Background texture
+- **Inter + JetBrains Mono** — Clean typography
 
-### Modifying Allowed Commands
+See `BRAND.md` for the full design token reference and rebranding guide.
 
-Edit `security.py` to add or remove commands from `ALLOWED_COMMANDS`.
+---
+
+## Timing Expectations
+
+- **First session (initialization):** Several minutes to generate features — this is normal
+- **Each coding iteration:** 5–15 minutes depending on complexity
+- **Full app:** Many hours across multiple sessions
+
+**Tip:** Target 20–50 features for a quick demo. Modify your app spec to control scope.
 
 ---
 
 ## Troubleshooting
 
-**"Claude CLI not found"**
-Install the Claude Code CLI using the instructions in the Prerequisites section.
-
-**"Not authenticated with Claude"**
-Run `claude login` to authenticate. The start script will prompt you to do this automatically.
-
-**"Appears to hang on first run"**
-This is normal. The initializer agent is generating detailed test cases, which takes significant time. Watch for `[Tool: ...]` output to confirm the agent is working.
-
-**"Command blocked by security hook"**
-The agent tried to run a command not in the allowlist. This is the security system working as intended. If needed, add the command to `ALLOWED_COMMANDS` in `security.py`.
-
-**"Python 3.11+ required but not found"**
-Install Python 3.11 or later from [python.org](https://www.python.org/downloads/). Make sure `python3` (or `python` on Windows) is on your PATH.
-
-**"Python venv module not available"**
-On Debian/Ubuntu, the venv module is packaged separately. Install it with `sudo apt install python3.XX-venv` (replace `XX` with your Python minor version, e.g., `python3.12-venv`).
-
-**"AutoForge is already running"**
-A server instance is already active. Use the browser URL shown in the terminal, or stop the existing instance with Ctrl+C first.
-
-**Virtual environment issues after a Python upgrade**
-Run `autoforge --repair` to delete and recreate the virtual environment from scratch.
+| Issue | Fix |
+|---|---|
+| `Python 3.11+ not found` | Install from [python.org](https://python.org). The installer tries `python3.13`, `3.12`, `3.11` automatically |
+| `venv module not available` | Debian/Ubuntu: `sudo apt install python3.XX-venv` |
+| `Claude CLI not found` | Install with `curl -fsSL https://claude.ai/install.sh \| bash` |
+| `Not authenticated` | Run `claude login` |
+| `Port already in use` | Use `./install.sh --port 9999` or kill the existing process |
+| `Hangs on first run` | Normal — the initializer is generating features. Watch for `[Tool: ...]` output |
+| `Command blocked` | Security system working. Add to allowlist in `security.py` if needed |
+| `Broken venv after Python upgrade` | Delete `venv/` and re-run `./install.sh` |
 
 ---
 
 ## License
 
-This project is licensed under the GNU Affero General Public License v3.0 - see the [LICENSE.md](LICENSE.md) file for details.
-Copyright (C) 2026 Leon van Zyl (https://leonvanzyl.com)
+This project is licensed under the GNU Affero General Public License v3.0 — see [LICENSE.md](LICENSE.md) for details.
