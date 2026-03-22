@@ -16,13 +16,13 @@ export interface ThemeOption {
 export const THEMES: ThemeOption[] = [
   {
     id: 'default',
-    name: '7nashHarness',
+    name: 'MqxForge',
     description: 'Glassmorphic violet and teal',
     previewColors: { primary: '#8b5cf6', background: '#1a1625', accent: '#06b6d4' }
   },
 ]
 
-const DARK_MODE_STORAGE_KEY = '7nash-dark-mode'
+const DARK_MODE_STORAGE_KEY = 'mqxforge-dark-mode'
 
 export function useTheme() {
   const [theme] = useState<ThemeId>('default')

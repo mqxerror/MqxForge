@@ -6,14 +6,14 @@ Use this file to rebrand the entire project. All brand-related values are centra
 
 | Property | Value |
 |---|---|
-| **Name** | 7nashHarness |
-| **Slug** | `7nash-harness` |
-| **npm Package** | `7nash-harness` |
-| **UI Package** | `7nash-harness-ui` |
-| **CSS Class Prefix** | `7nash-` |
-| **localStorage Prefix** | `7nash-` |
-| **Config Directory** | `~/.autoforge/` *(not yet renamed — see backend section)* |
-| **Project Directory** | `.autoforge/` *(not yet renamed — see backend section)* |
+| **Name** | MqxForge |
+| **Slug** | `mqxforge` |
+| **npm Package** | `mqxforge` |
+| **UI Package** | `mqxforge-ui` |
+| **localStorage Prefix** | `mqxforge-` |
+| **Default Host** | `localhost` |
+| **Config Directory** | `~/.autoforge/` *(backend — not yet renamed)* |
+| **Project Directory** | `.autoforge/` *(backend — not yet renamed)* |
 
 ---
 
@@ -27,14 +27,15 @@ Use this file to rebrand the entire project. All brand-related values are centra
 | `ui/src/App.tsx` | Header title (`text-gradient` h1), welcome message text |
 | `ui/src/components/NewProjectModal.tsx` | Template description text referencing brand |
 | `ui/public/logo.png` | Logo image (238KB, displayed at 36x36px) |
+| `install.sh` | Banner text in `banner()` and `start_server()` functions |
 
 ### Tier 2: Storage Keys & Package Names
 
 | File | What to Change |
 |---|---|
-| `ui/src/App.tsx` | `STORAGE_KEY` and `VIEW_MODE_KEY` constants (prefix `7nash-`) |
-| `ui/src/hooks/useTheme.ts` | `DARK_MODE_STORAGE_KEY` constant (prefix `7nash-`) |
-| `ui/src/components/AgentMissionControl.tsx` | `ACTIVITY_COLLAPSED_KEY` constant (prefix `7nash-`) |
+| `ui/src/App.tsx` | `STORAGE_KEY` and `VIEW_MODE_KEY` constants (prefix `mqxforge-`) |
+| `ui/src/hooks/useTheme.ts` | `DARK_MODE_STORAGE_KEY` constant (prefix `mqxforge-`) |
+| `ui/src/components/AgentMissionControl.tsx` | `ACTIVITY_COLLAPSED_KEY` constant (prefix `mqxforge-`) |
 | `package.json` | `name` field |
 | `ui/package.json` | `name` field and dependency reference to root package |
 
@@ -43,10 +44,9 @@ Use this file to rebrand the entire project. All brand-related values are centra
 | File | What to Change |
 |---|---|
 | `bin/autoforge.js` | Entry point (rename file + update `package.json` `bin` field) |
-| `lib/cli.js` | Banner text, help text, `CONFIG_HOME` path, all "AutoForge" strings |
+| `lib/cli.js` | Banner text, help text, `CONFIG_HOME` path, all brand strings |
 | `start_ui.sh` | Banner text |
 | `start_ui.py` | Banner text, argparse description |
-| `install.sh` | Banner text in `banner()` and `start_server()` functions |
 | `autoforge_paths.py` | Module name (rename file + update all imports) |
 
 ### Tier 4: Documentation

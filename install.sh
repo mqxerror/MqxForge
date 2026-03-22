@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================================
-#  7nashHarness - One Command Installer
+#  MqxForge - One Command Installer
 # ============================================================================
 #
 #  Usage:
@@ -29,7 +29,7 @@ VENV_DIR="$SCRIPT_DIR/venv"
 UI_DIR="$SCRIPT_DIR/ui"
 PYTHON_CMD=""
 PORT=""
-HOST="127.0.0.1"
+HOST="localhost"
 NO_BROWSER=false
 DEV_MODE=false
 INSTALL_ONLY=false
@@ -50,7 +50,7 @@ step() {
 banner() {
   echo ""
   echo -e "  ${BOLD}${CYAN}╔══════════════════════════════════════════╗${RESET}"
-  echo -e "  ${BOLD}${CYAN}║${RESET}       ${BOLD}7nashHarness${RESET} Installer            ${BOLD}${CYAN}║${RESET}"
+  echo -e "  ${BOLD}${CYAN}║${RESET}          ${BOLD}MqxForge${RESET} Installer               ${BOLD}${CYAN}║${RESET}"
   echo -e "  ${BOLD}${CYAN}╚══════════════════════════════════════════╝${RESET}"
   echo ""
 }
@@ -81,7 +81,7 @@ parse_args() {
         echo "  --dev            Dev mode with Vite hot reload"
         echo "  --install-only   Install deps only, don't start server"
         echo "  --port PORT      Custom port (default: auto from 8888)"
-        echo "  --host HOST      Custom host (default: 127.0.0.1)"
+        echo "  --host HOST      Custom host (default: localhost)"
         echo "  --help           Show this help"
         exit 0
         ;;
@@ -270,7 +270,7 @@ start_server() {
 
   echo ""
   echo -e "  ${BOLD}${CYAN}╔══════════════════════════════════════════╗${RESET}"
-  echo -e "  ${BOLD}${CYAN}║${RESET}  ${GREEN}${BOLD}7nashHarness is ready!${RESET}                  ${BOLD}${CYAN}║${RESET}"
+  echo -e "  ${BOLD}${CYAN}║${RESET}  ${GREEN}${BOLD}MqxForge is ready!${RESET}                      ${BOLD}${CYAN}║${RESET}"
   echo -e "  ${BOLD}${CYAN}║${RESET}                                          ${BOLD}${CYAN}║${RESET}"
   echo -e "  ${BOLD}${CYAN}║${RESET}  ${BOLD}http://$HOST:$port${RESET}$(printf '%*s' $((24 - ${#HOST} - ${#port})) '')${BOLD}${CYAN}║${RESET}"
   echo -e "  ${BOLD}${CYAN}║${RESET}                                          ${BOLD}${CYAN}║${RESET}"

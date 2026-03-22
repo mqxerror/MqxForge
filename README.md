@@ -1,4 +1,4 @@
-# 7nashHarness (MqxForge)
+# MqxForge
 
 A long-running autonomous coding agent powered by the Claude Agent SDK. Build complete applications over multiple sessions using a two-agent pattern (initializer + coding agent). Includes a React-based UI with an Aceternity-inspired glassmorphic design for monitoring progress in real-time.
 
@@ -30,7 +30,7 @@ That's it. The installer handles everything:
 5. Installs npm packages for the UI
 6. Builds the React frontend
 7. Checks for Claude CLI
-8. Starts the server and opens your browser
+8. Starts the server at `http://localhost:8888` and opens your browser
 
 ### Installer Options
 
@@ -106,7 +106,7 @@ source venv/bin/activate        # macOS/Linux
 pip install -r requirements.txt
 
 # Start the server
-python -m uvicorn server.main:app --host 127.0.0.1 --port 8888
+python -m uvicorn server.main:app --host localhost --port 8888
 ```
 
 ### React UI

@@ -1,7 +1,7 @@
 {
-  "name": "7nash-harness",
+  "name": "mqxforge",
   "version": "0.1.17",
-  "description": "7nashHarness - Autonomous coding agent with web UI",
+  "description": "MqxForge - Autonomous coding agent with web UI",
   "license": "AGPL-3.0",
   "bin": {
     "autoforge": "./bin/autoforge.js"

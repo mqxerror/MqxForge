@@ -35,8 +35,8 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
 
-const STORAGE_KEY = '7nash-selected-project'
-const VIEW_MODE_KEY = '7nash-view-mode'
+const STORAGE_KEY = 'mqxforge-selected-project'
+const VIEW_MODE_KEY = 'mqxforge-view-mode'
 
 // Bottom padding for main content when debug panel is collapsed (40px header + 8px margin)
 const COLLAPSED_DEBUG_PANEL_CLEARANCE = 48
@@ -268,9 +268,9 @@ function App() {
             <div className="flex items-center gap-3">
               {/* Logo and Title */}
               <div className="flex items-center gap-2 shrink-0">
-                <img src="/logo.png" alt="7nashHarness" className="h-9 w-9 rounded-full" />
+                <img src="/logo.png" alt="MqxForge" className="h-9 w-9 rounded-full" />
                 <h1 className="text-gradient text-2xl font-bold tracking-tight hidden md:block">
-                  7nashHarness
+                  MqxForge
                 </h1>
               </div>
 
@@ -382,7 +382,7 @@ function App() {
         {!selectedProject ? (
           <div className="text-center mt-12">
             <h2 className="text-gradient text-2xl font-bold mb-2">
-              Welcome to 7nashHarness
+              Welcome to MqxForge
             </h2>
             <p className="text-muted-foreground mb-4">
               Select a project from the dropdown above or create a new one to get started.
