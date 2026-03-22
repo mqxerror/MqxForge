@@ -50,6 +50,10 @@
     "code-generation"
   ],
   "scripts": {
+    "start": "./install.sh",
+    "dev": "./install.sh --dev",
+    "build": "cd ui && npm install && npm run build",
+    "install:deps": "./install.sh --install-only",
     "prepublishOnly": "npm --prefix ui install && npm --prefix ui run build"
   }
 }

@@ -32,6 +32,23 @@ That's it. The installer handles everything:
 7. Checks for Claude CLI
 8. Starts the server at `http://localhost:8888` and opens your browser
 
+### All Ways to Run
+
+```bash
+# Primary (recommended)
+./install.sh                    # Full install + start + open browser
+
+# npm scripts (same thing, for npm users)
+npm start                       # Same as ./install.sh
+npm run dev                     # Dev mode with Vite hot reload
+npm run build                   # Just build the UI
+npm run install:deps            # Install everything, don't start server
+
+# Legacy scripts (also work — they delegate to install.sh)
+./start.sh                      # Same as ./install.sh
+./start_ui.sh                   # Same as ./install.sh
+```
+
 ### Installer Options
 
 ```bash
